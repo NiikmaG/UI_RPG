@@ -1,15 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Character
+public abstract class Enemy : Character
 {
-    [SerializeField] private float minDamage, maxDamage;
+    [SerializeField] private int expReward = 30;
+    [SerializeField] private string attackName = "Attack";
 
-    public override void Attack(Character toHit)
+    public int ExpReward
     {
-        float damage = Random.Range(minDamage, maxDamage);
-        toHit.GetHit(damage);
-        Debug.Log("I AM ATTACKING THE PLAYER!");
+        get { return expReward; }
+        protected set { expReward = value < 0 ? 0 : value; }
+    }
+
+    public string AttackName
+    {
+        get { return attackName; }
+        protected set { attackName = value; }
+    }
+
+    public abstract override int Attack(Character target);
+
+    public virtual string UseSpecialAbility(Character target)
+    {
+        return $"{Name} has no special ability.";
     }
 }
