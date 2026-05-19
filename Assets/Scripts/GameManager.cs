@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
 
         if (!_currentEnemy.IsAlive)
         {
+            AudioManager.Instance?.PlayEnemyDeath();
             log += $"{_currentEnemy.Name} is defeated!\n";
             int exp = _currentEnemy.ExpReward;
             int oldLevel = player.Level;
@@ -73,19 +74,24 @@ public class GameManager : MonoBehaviour
             log += $"Gained {exp} XP!\n";
 
             if (player.Level > oldLevel)
+            {
+                AudioManager.Instance?.PlayLevelUp();
                 log += $"Level up! Now level {player.Level}!\n";
+            }
 
             SpawnEnemy();
             log += $"A new enemy appears: {_currentEnemy.Name}!";
         }
         else
         {
+            AudioManager.Instance?.PlayHit();
             int enemyDmg = _currentEnemy.Attack(player);
             log += $"{_currentEnemy.Name} uses {_currentEnemy.AttackName} for {enemyDmg} damage!";
 
             if (!player.IsAlive)
             {
                 _gameOver = true;
+                AudioManager.Instance?.PlayGameOver();
                 log += "\nYou died! Game over!";
             }
         }
@@ -109,6 +115,7 @@ public class GameManager : MonoBehaviour
     public void CastSpell(int index)
     {
         if (_gameOver) return;
+        AudioManager.Instance?.PlayHeal();
         string result = player.CastSpell(index, _currentEnemy);
         uiManager.UpdateUI(player, _currentEnemy);
         uiManager.ShowLog(result);
@@ -117,6 +124,7 @@ public class GameManager : MonoBehaviour
     public void ToggleShield()
     {
         if (_gameOver) return;
+        AudioManager.Instance?.PlayShield();
         player.ToggleShield();
         uiManager.UpdateUI(player, _currentEnemy);
         uiManager.ShowLog(player.ShieldOn ? "Shield activated!" : "Shield deactivated!");
@@ -125,6 +133,7 @@ public class GameManager : MonoBehaviour
     public void RepairShield()
     {
         if (_gameOver) return;
+        AudioManager.Instance?.PlayShield();
         player.RepairShield();
         uiManager.UpdateUI(player, _currentEnemy);
         uiManager.ShowLog("Shield repaired!");

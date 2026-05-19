@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,6 +10,8 @@ public class UIManager : MonoBehaviour
 
     [Header("Enemy")]
     [SerializeField] private TextMeshProUGUI enemyInfoText;
+    [SerializeField] private Image zombieImage;
+    [SerializeField] private Image vampireImage;
 
     [Header("Battle Log")]
     [SerializeField] private TextMeshProUGUI battleLogText;
@@ -16,6 +19,8 @@ public class UIManager : MonoBehaviour
     [Header("Other")]
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private Button attackButton;
+
+    private Enemy _lastEnemy;
 
     public void UpdateUI(Player player, Enemy enemy)
     {
@@ -39,8 +44,49 @@ public class UIManager : MonoBehaviour
                 $"Current spell: - / Pierce";
         }
 
+        bool isZombie = enemy is Zombie;
+        Image activeImage = isZombie ? zombieImage : vampireImage;
+        Image hiddenImage = isZombie ? vampireImage : zombieImage;
+
+        if (hiddenImage) hiddenImage.gameObject.SetActive(false);
+
+        if (activeImage)
+        {
+            bool enemyChanged = enemy != _lastEnemy;
+            if (enemyChanged)
+            {
+                StopAllCoroutines();
+                StartCoroutine(FadeIn(activeImage));
+            }
+        }
+
+        _lastEnemy = enemy;
+
         if (gameOverPanel) gameOverPanel.SetActive(!player.IsAlive);
         if (attackButton) attackButton.interactable = player.IsAlive;
+    }
+
+    private IEnumerator FadeIn(Image image)
+    {
+        image.gameObject.SetActive(true);
+
+        Color c = image.color;
+        c.a = 0f;
+        image.color = c;
+
+        float duration = 0.5f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            c.a = Mathf.Clamp01(elapsed / duration);
+            image.color = c;
+            yield return null;
+        }
+
+        c.a = 1f;
+        image.color = c;
     }
 
     public void ShowLog(string message)
