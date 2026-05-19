@@ -1,46 +1,52 @@
-# UI RPG - Ņikita Magamedgadžijevs
+# UI RPG - Nikita Magamedgadzijevs
 
-## Par projektu
+## About the project
 
-Šis ir Unity spēle, kurā spēlētājs cīnās pret pretiniekiem caur UI pogām. Spēle ir izveidota izmantojot 4 OOP principus.
+This is a Unity game where the player fights enemies through UI buttons. 
+The game was made using 4 OOP principles.
 
-## Kā spēlēt
+## How to play
 
-- Nospied **Attack zombie** lai uzbruktu pretiniekam
-- Pēc uzbrukuma pretinieks automātiski uzbrūk atpakaļ
-- Ja pretinieks nomirst - parādās jauns
-- Ja spēlētājs nomirst - spēle beidzas, var restartēt
-
----
-
-## OOP principi
-
-### 1. Mantošana
-Izveidoju bāzes klasi `Character`, no kuras manto gan `Player`, gan `Enemy`. `Enemy` arī ir abstrakts un no tā manto `Zombie` un `Vampire`. Tāpat `Weapon` ir bāze `Sword`, `Staff`, `Bow` klasēm, un `Spell` - `HealSpell` un `ShieldSpell` klasēm.
-
-### 2. Enkapsulācija
-Visi lauki klasēs ir `private`, un piekļuve tiem notiek caur `get`/`set` properties. Piemēram, `CurrentHp` automātiski ierobežo vērtību starp 0 un `MaxHp`.
-
-### 3. Polimorfisms
-Izmantoju gan **override**, gan **overload**:
-- `Attack()` metode ir pārrakstīta katrā klasē savādāk
-- `TakeDamage(int damage)` un `TakeDamage(int damage, bool ignoreDefense)` - overload piemērs
-- `GetDescription()` un `GetDescription(bool detailed)` - vēl viens overload
-
-### 4. Abstrakcija
-`Weapon` ir abstrakta klase ar abstraktu metodi `CalculateDamage()` un parasto metodi `GetDescription()`. No šīs klases manto `Sword`, `Staff` un `Bow`. Tāpat `Character` satur abstraktu `Attack()` metodi.
+- Press **Attack zombie** to attack the enemy
+- After the attack the enemy automatically attacks back
+- If the enemy dies - a new one appears
+- If the player dies - game over, you can restart
 
 ---
 
-## Papildus uzdevumi
+## OOP Principles
 
-- **2 dažādi pretinieki** - Zombie (fiziski uzbrukumi) un Vampire (dzīvības zādzība)
-- **3 ieroču veidi** - Sword (kritiskais sitiens), Staff (bonuss pret nedzīvajiem), Bow (ignorē aizsardzību)
-- **Līmeņu sistēma** - spēlētājs iegūst XP un paaugstina līmeni
-- **Burvības** - Heal (atjauno HP) un Protect HP (vairogs)
+### 1. Inheritance
+I created a base class `Character`, which is inherited by both `Player` and `Enemy`. 
+`Enemy` is also abstract and is inherited by `Zombie` and `Vampire`. 
+Similarly `Weapon` is the base for `Sword`, `Staff`, `Bow`, and `Spell` is the base for `HealSpell` and `ShieldSpell`.
 
-## Bonuss
+### 2. Encapsulation
+All fields in the classes are `private`, and access to them is done through `get`/`set` properties. 
+For example, `CurrentHp` automatically clamps the value between 0 and `MaxHp`.
 
-- Skaņas efekti
-- Pretinieku attēli ar fade-in animāciju
-- Fona attēls
+### 3. Polymorphism
+I used both **override** and **overload**:
+- `Attack()` method is overridden differently in each class
+- `TakeDamage(int damage)` and `TakeDamage(int damage, bool ignoreDefense)` - overload example
+- `GetDescription()` and `GetDescription(bool detailed)` - another overload
+
+### 4. Abstraction
+`Weapon` is an abstract class with an abstract method `CalculateDamage()` and a regular method `GetDescription()`. 
+`Sword`, `Staff` and `Bow` inherit from it. 
+`Character` also contains an abstract `Attack()` method.
+
+---
+
+## Bonus tasks
+
+- **2 different enemies** - Zombie (physical attacks) and Vampire (life steal)
+- **3 weapon types** - Sword (critical hit), Staff (bonus vs undead), Bow (ignores defense)
+- **Level system** - player gains XP and levels up
+- **Spells** - Heal (restores HP) and Protect HP (shield)
+
+## Extras
+
+- Sound effects
+- Enemy images with fade-in animation
+- Background image
